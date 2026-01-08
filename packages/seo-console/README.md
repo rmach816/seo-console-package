@@ -1,6 +1,6 @@
 # SEO Console Package
 
-A production-ready SEO validation and management system for Next.js applications. Install this package into your existing Next.js project to add SEO metadata management capabilities.
+A production-ready SEO validation and management system for Next.js applications. This package provides a complete admin interface for managing SEO metadata, accessible through a new tab in your admin section.
 
 ## Installation
 
@@ -8,44 +8,208 @@ A production-ready SEO validation and management system for Next.js applications
 npm install @seo-console/package
 ```
 
-## Quick Start
+## Setup Guide
 
-### 1. Storage Options
+### Step 1: Configure Storage (Optional)
 
-The package supports multiple storage backends. **File storage is the default** and requires no database setup.
+The package uses **file storage by default** (no database required). SEO records are stored in `seo-records.json`.
 
-#### Option A: File Storage (Default - No Database Required)
-
-File storage is the default option. SEO records are stored in a JSON file (`seo-records.json` by default).
-
-No configuration needed! The package will automatically use file storage if no Supabase credentials are provided.
-
-To customize the file path, set an environment variable:
+To customize the storage location, add to your `.env.local`:
 
 ```env
 SEO_CONSOLE_STORAGE_PATH=./data/seo-records.json
 ```
 
-#### Option B: Supabase Storage (Optional)
-
-If you prefer using Supabase as your storage backend:
-
-1. Create a Supabase project at [supabase.com](https://supabase.com)
-2. Run the database migrations from `migrations/`:
-   - `001_initial_schema.sql` - User profiles
-   - `002_seo_records_schema.sql` - SEO records table
-3. Add environment variables:
+**Optional:** If you prefer Supabase, set these environment variables:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
-The package will automatically detect Supabase credentials and use Supabase storage instead of file storage.
+The package will automatically detect and use Supabase if these are set.
 
-### 2. Use in Your Next.js App
+### Step 2: Create API Routes
 
-#### Add SEO Metadata to Pages
+Create the following API route in your Next.js app:
+
+**`app/api/seo-records/route.ts`:**
+
+```typescript
+import { NextRequest, NextResponse } from "next/server";
+import { 
+  getSEORecords, 
+  getSEORecordByRoute, 
+  createSEORecord, 
+  updateSEORecord, 
+  deleteSEORecord 
+} from "@seo-console/package/server";
+
+// GET - Fetch all SEO records
+export async function GET() {
+  try {
+    const result = await getSEORecords();
+    if (!result.success) {
+      return NextResponse.json({ error: result.error?.message }, { status: 500 });
+    }
+    return NextResponse.json({ data: result.data || [] });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Failed to fetch records" },
+      { status: 500 }
+    );
+  }
+}
+
+// POST - Create a new SEO record
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const result = await createSEORecord(body);
+    if (!result.success) {
+      return NextResponse.json({ error: result.error?.message }, { status: 500 });
+    }
+    return NextResponse.json({ data: result.data });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Failed to create record" },
+      { status: 500 }
+    );
+  }
+}
+
+// PUT - Update an existing SEO record
+export async function PUT(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const result = await updateSEORecord(body);
+    if (!result.success) {
+      return NextResponse.json({ error: result.error?.message }, { status: 500 });
+    }
+    return NextResponse.json({ data: result.data });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Failed to update record" },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE - Delete an SEO record
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ error: "ID is required" }, { status: 400 });
+    }
+    const result = await deleteSEORecord(id);
+    if (!result.success) {
+      return NextResponse.json({ error: result.error?.message }, { status: 500 });
+    }
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Failed to delete record" },
+      { status: 500 }
+    );
+  }
+}
+```
+
+### Step 3: Add Admin Pages
+
+Create the admin SEO section in your Next.js app. This will be accessible as a new tab in your admin area.
+
+**Create the directory structure:**
+
+```
+app/admin/seo/
+  ├── page.tsx          (Main dashboard)
+  ├── editor/
+  │   └── page.tsx      (SEO record editor)
+  ├── reports/
+  │   └── page.tsx      (Reports & analytics)
+  ├── search/
+  │   └── page.tsx      (Search & validation)
+  └── settings/
+      └── page.tsx      (Settings)
+```
+
+**`app/admin/seo/page.tsx` (Main Dashboard):**
+
+```typescript
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import type { SEORecord } from "@seo-console/package";
+
+export default function SEOAdminPage() {
+  const router = useRouter();
+  const [records, setRecords] = useState<SEORecord[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/seo-records")
+      .then((res) => res.json())
+      .then((data) => {
+        setRecords(data.data || []);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  return (
+    <div>
+      <h1>SEO Management</h1>
+      <nav>
+        <a href="/admin/seo">Dashboard</a>
+        <a href="/admin/seo/editor">Editor</a>
+        <a href="/admin/seo/reports">Reports</a>
+        <a href="/admin/seo/search">Search</a>
+        <a href="/admin/seo/settings">Settings</a>
+      </nav>
+      {/* Your SEO dashboard content */}
+    </div>
+  );
+}
+```
+
+**`app/admin/seo/editor/page.tsx` (Editor):**
+
+```typescript
+"use client";
+
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import type { SEORecord } from "@seo-console/package";
+
+export default function EditorPage() {
+  const searchParams = useSearchParams();
+  const route = searchParams.get("route");
+  const [record, setRecord] = useState<SEORecord | null>(null);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    canonicalUrl: "",
+  });
+
+  // Load and save logic here
+  return (
+    <div>
+      <h1>Edit SEO Record</h1>
+      {/* Your editor form */}
+    </div>
+  );
+}
+```
+
+> **Note:** For complete implementation examples, see the demo app in the repository. The package provides the data layer and utilities; you'll need to build the UI components or copy from the demo.
+
+### Step 4: Add SEO Metadata to Your Pages
+
+Use the `useGenerateMetadata` hook to automatically generate metadata from your SEO records:
 
 ```typescript
 // app/blog/[slug]/page.tsx
@@ -54,31 +218,38 @@ import { useGenerateMetadata } from "@seo-console/package/hooks";
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const metadata = await useGenerateMetadata({
     routePath: `/blog/${params.slug}`,
+    fallback: {
+      title: "Blog Post",
+      description: "Default description"
+    }
   });
   return metadata;
 }
 ```
 
-#### Add Admin Components to Your Admin Page
+### Step 5: Add to Your Admin Navigation
+
+Add a link to the SEO admin section in your main admin navigation:
 
 ```typescript
-// app/admin/seo/page.tsx
-"use client";
-
-import { SEORecordList, SEORecordForm } from "@seo-console/package/components";
-import { ValidationDashboard } from "@seo-console/package/components";
-
-export default function SEOAdminPage() {
-  return (
-    <div>
-      <h1>SEO Management</h1>
-      <SEORecordList />
-      <SEORecordForm />
-      <ValidationDashboard />
-    </div>
-  );
-}
+// app/admin/layout.tsx or your admin navigation component
+<nav>
+  <Link href="/admin/dashboard">Dashboard</Link>
+  <Link href="/admin/seo">SEO</Link> {/* Add this */}
+  <Link href="/admin/users">Users</Link>
+  {/* ... other admin links */}
+</nav>
 ```
+
+## Quick Start Summary
+
+1. **Install:** `npm install @seo-console/package`
+2. **Create API route:** `app/api/seo-records/route.ts` (see Step 2)
+3. **Create admin pages:** `app/admin/seo/` directory with pages (see Step 3)
+4. **Add to navigation:** Link to `/admin/seo` in your admin menu
+5. **Use in pages:** Add `generateMetadata` to your pages (see Step 4)
+
+That's it! The SEO admin interface will be accessible at `/admin/seo` as a new tab in your admin area.
 
 ## API Reference
 
@@ -100,27 +271,7 @@ const metadata = await useGenerateMetadata({
 });
 ```
 
-### Components
-
-#### `SEORecordList`
-
-Displays a list of all SEO records with edit/delete functionality.
-
-#### `SEORecordForm`
-
-Form for creating and editing SEO records.
-
-#### `ValidationDashboard`
-
-Dashboard showing validation results for all SEO records.
-
-#### `OGImagePreview`
-
-Preview component showing how OG images appear on social platforms.
-
 ### Server-Side Functions
-
-The package exports server-side functions for API routes and server components:
 
 ```typescript
 import { 
