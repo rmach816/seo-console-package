@@ -10,23 +10,40 @@ npm install @seo-console/package
 
 ## Quick Start
 
-### 1. Set up Supabase
+### 1. Storage Options
+
+The package supports multiple storage backends. **File storage is the default** and requires no database setup.
+
+#### Option A: File Storage (Default - No Database Required)
+
+File storage is the default option. SEO records are stored in a JSON file (`seo-records.json` by default).
+
+No configuration needed! The package will automatically use file storage if no Supabase credentials are provided.
+
+To customize the file path, set an environment variable:
+
+```env
+SEO_CONSOLE_STORAGE_PATH=./data/seo-records.json
+```
+
+#### Option B: Supabase Storage (Optional)
+
+If you prefer using Supabase as your storage backend:
 
 1. Create a Supabase project at [supabase.com](https://supabase.com)
-2. Run the database migrations from `supabase/migrations/`:
+2. Run the database migrations from `migrations/`:
    - `001_initial_schema.sql` - User profiles
    - `002_seo_records_schema.sql` - SEO records table
-
-### 2. Configure Environment Variables
-
-Add to your `.env.local`:
+3. Add environment variables:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
-### 3. Use in Your Next.js App
+The package will automatically detect Supabase credentials and use Supabase storage instead of file storage.
+
+### 2. Use in Your Next.js App
 
 #### Add SEO Metadata to Pages
 
@@ -69,7 +86,7 @@ export default function SEOAdminPage() {
 
 #### `useGenerateMetadata(options)`
 
-Generates Next.js metadata from SEO records stored in Supabase.
+Generates Next.js metadata from SEO records.
 
 ```typescript
 import { useGenerateMetadata } from "@seo-console/package/hooks";
@@ -101,13 +118,39 @@ Dashboard showing validation results for all SEO records.
 
 Preview component showing how OG images appear on social platforms.
 
-## Database Schema
+### Server-Side Functions
 
-The package requires two Supabase tables:
-- `profiles` - User profiles (from migration 001)
-- `seo_records` - SEO metadata records (from migration 002)
+The package exports server-side functions for API routes and server components:
 
-See `supabase/migrations/` for the full schema.
+```typescript
+import { 
+  getSEORecords,
+  getSEORecordByRoute,
+  createSEORecord,
+  updateSEORecord,
+  deleteSEORecord,
+  generateSitemapFromRecords,
+  generateRobotsTxt,
+  discoverNextJSRoutes,
+  extractMetadataFromURL
+} from "@seo-console/package/server";
+```
+
+## Storage Backends
+
+### File Storage (Default)
+
+- **No database required** - stores data in a JSON file
+- **Perfect for small to medium sites** - simple and fast
+- **File location**: `seo-records.json` (configurable via `SEO_CONSOLE_STORAGE_PATH`)
+- **Automatic**: Works out of the box with no configuration
+
+### Supabase Storage (Optional)
+
+- **Database-backed** - uses Supabase PostgreSQL
+- **Better for larger sites** - scalable and supports concurrent access
+- **Requires**: Supabase project and migrations
+- **Auto-detected**: If `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are set
 
 ## License
 
