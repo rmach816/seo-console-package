@@ -1,6 +1,6 @@
 {
   "name": "@seo-console/package",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "SEO validation and management system for Next.js applications",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -49,7 +49,6 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@supabase/supabase-js": "^2.0.0",
     "next": "^14.0.0 || ^15.0.0 || ^16.0.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
