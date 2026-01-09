@@ -15,8 +15,6 @@ export default defineConfig({
   external: [
     "react",
     "react-dom",
-    "next",
-    "@supabase/supabase-js",
-    "@supabase/ssr"
+    "next"
   ],
 });

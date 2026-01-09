@@ -5,10 +5,11 @@
   "cwd": "D:\\SEO\\seo-console-package",
   "command": "verify",
   "argv": [
-    "verify"
+    "verify",
+    "--full"
   ],
   "resolvedPaths": {
     "cwd": "D:\\SEO\\seo-console-package"
   },
-  "errorMessage": "Verify failed: 1 check(s) failed or missing. Failed scripts: typecheck"
+  "errorMessage": "Verify failed: 2 check(s) failed or missing. Failed scripts: typecheck, build"
 }

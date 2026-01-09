@@ -545,13 +545,29 @@
         "typecheck"
       ],
       "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-09T04:07:08.407Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "typecheck",
+        "build"
+      ],
+      "preset": "startup"
     }
   ],
   "stats": {
-    "totalRuns": 41,
+    "totalRuns": 42,
     "passed": 27,
-    "failed": 14,
+    "failed": 15,
     "streak": 0,
-    "lastRun": "2026-01-08T19:10:26.530Z"
+    "lastRun": "2026-01-09T04:07:08.407Z"
   }
 }
