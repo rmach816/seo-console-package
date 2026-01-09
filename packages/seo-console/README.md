@@ -8,6 +8,15 @@ A production-ready SEO validation and management system for Next.js applications
 npm install @seo-console/package
 ```
 
+**🎉 Automatic Setup:** After installation, the package automatically generates all necessary API routes and admin pages. No manual setup required!
+
+If you need to run setup manually:
+```bash
+npx @seo-console/package setup
+# or
+npm run setup --workspace=@seo-console/package
+```
+
 ## Setup Guide
 
 ### Step 1: Configure Storage (Optional)
