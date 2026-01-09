@@ -42,15 +42,10 @@ export interface StorageAdapter {
   isAvailable(): Promise<boolean>;
 }
 
-export type StorageType = "supabase" | "file" | "sqlite" | "memory";
+export type StorageType = "file" | "memory";
 
 export interface StorageConfig {
-  type: StorageType;
-  // Supabase config
-  supabaseUrl?: string;
-  supabaseKey?: string;
+  type?: StorageType; // Optional, defaults to "file"
   // File storage config
   filePath?: string;
-  // SQLite config
-  sqlitePath?: string;
 }

@@ -3,16 +3,9 @@
  * These can be safely imported in API routes and server components
  */
 
-// Export database functions
-export {
-  getSEORecords,
-  getSEORecords as getAllSEORecords, // Alias for backward compatibility
-  getSEORecordById,
-  getSEORecordByRoute,
-  createSEORecord,
-  updateSEORecord,
-  deleteSEORecord,
-} from "./lib/database/seo-records";
+// Note: Database functions (getSEORecords, etc.) are no longer exported
+// Use storage adapters from the main package instead:
+// import { detectStorageConfig, createStorageAdapter } from "@seo-console/package";
 
 // Export validation schemas
 export { createSEORecordSchema, updateSEORecordSchema } from "./lib/validation/seo-schema";

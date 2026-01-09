@@ -12,7 +12,7 @@ npm install @seo-console/package
 
 ### Step 1: Configure Storage (Optional)
 
-The package uses **file storage by default** (no database required). SEO records are stored in `seo-records.json`.
+The package uses **file storage** (no database required). SEO records are stored in `seo-records.json` in your project root.
 
 To customize the storage location, add to your `.env.local`:
 
@@ -20,14 +20,7 @@ To customize the storage location, add to your `.env.local`:
 SEO_CONSOLE_STORAGE_PATH=./data/seo-records.json
 ```
 
-**Optional:** If you prefer Supabase, set these environment variables:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-```
-
-The package will automatically detect and use Supabase if these are set.
+That's it! No database setup needed.
 
 ### Step 2: Create API Routes (REQUIRED - This is why you're getting 404 errors!)
 
@@ -43,7 +36,7 @@ import { createSEORecordSchema } from "@seo-console/package/server";
 // GET - Fetch all SEO records
 export async function GET() {
   try {
-    // Auto-detect storage type (file or Supabase)
+    // Get file storage adapter
     const config = detectStorageConfig();
     const storage = createStorageAdapter(config);
     
@@ -186,9 +179,7 @@ export async function DELETE(
 }
 ```
 
-> **Important:** These API routes use the storage adapter system, which automatically works with:
-> - **File storage** (default) - if no Supabase credentials are set
-> - **Supabase** - if `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are set
+> **Important:** These API routes use file storage. SEO records are stored in `seo-records.json` in your project root (or the path specified in `SEO_CONSOLE_STORAGE_PATH`).
 
 ### Step 3: Add Admin Pages
 
@@ -344,15 +335,28 @@ const metadata = await useGenerateMetadata({
 });
 ```
 
-### Server-Side Functions
+### Storage Functions
 
 ```typescript
 import { 
-  getSEORecords,
-  getSEORecordByRoute,
-  createSEORecord,
-  updateSEORecord,
-  deleteSEORecord,
+  detectStorageConfig,
+  createStorageAdapter
+} from "@seo-console/package";
+
+// Get storage adapter (uses file storage)
+const config = detectStorageConfig();
+const storage = createStorageAdapter(config);
+
+// Use storage methods
+const records = await storage.getRecords();
+const record = await storage.getRecordByRoute("/about");
+await storage.createRecord({ routePath: "/contact", title: "Contact" });
+```
+
+### Other Server-Side Functions
+
+```typescript
+import { 
   generateSitemapFromRecords,
   generateRobotsTxt,
   discoverNextJSRoutes,
@@ -360,21 +364,14 @@ import {
 } from "@seo-console/package/server";
 ```
 
-## Storage Backends
+## Storage
 
-### File Storage (Default)
+The package uses **file storage** - SEO records are stored in a JSON file (`seo-records.json` by default).
 
-- **No database required** - stores data in a JSON file
-- **Perfect for small to medium sites** - simple and fast
-- **File location**: `seo-records.json` (configurable via `SEO_CONSOLE_STORAGE_PATH`)
-- **Automatic**: Works out of the box with no configuration
-
-### Supabase Storage (Optional)
-
-- **Database-backed** - uses Supabase PostgreSQL
-- **Better for larger sites** - scalable and supports concurrent access
-- **Requires**: Supabase project and migrations
-- **Auto-detected**: If `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are set
+- **No database required** - works out of the box
+- **Simple and fast** - perfect for most sites
+- **Version controlled** - the JSON file can be committed to git
+- **Configurable** - set `SEO_CONSOLE_STORAGE_PATH` to customize the file location
 
 ## License
 

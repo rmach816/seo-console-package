@@ -1,0 +1,93 @@
+# SEO Console Package - Cursor Rules
+
+## Project Context
+This is a TypeScript package for SEO validation in Next.js applications. The package provides:
+- Server-side SEO metadata validation
+- Integration with Next.js App Router generateMetadata
+- Admin UI for managing SEO records
+- Build-time validation and reporting
+
+## Code Quality Standards
+
+### TypeScript
+- Use strict TypeScript configuration
+- No `any` types allowed - use proper typing
+- Export all types and interfaces
+- Use branded types for IDs: `type SEORecordId = string & { __brand: 'SEORecordId' }`
+- Prefer type assertions over type casting
+
+### Package Development
+- Keep bundle size minimal - track with `npm run bundle-analyzer`
+- Use peer dependencies for React/Next.js
+- Support both ESM and CommonJS exports
+- Tree-shaking friendly exports
+
+### Next.js Integration
+- Always use App Router patterns
+- Server Components by default, Client Components when needed
+- Proper generateMetadata integration
+- Handle dynamic routes with proper typing
+
+### Supabase Integration
+- Use typed Supabase client with generated types
+- Implement proper RLS policies
+- Handle auth state changes properly
+- Use real-time subscriptions for admin UI updates
+
+### Component Development
+- Use Radix UI primitives for accessibility
+- Implement proper ARIA attributes
+- Ensure keyboard navigation works
+- Test with screen readers
+- Use semantic HTML elements
+
+### Form Handling
+- Use React Hook Form with Zod validation
+- Implement proper error handling and display
+- Optimistic updates where appropriate
+- Loading states for all async operations
+
+### SEO Validation Logic
+- Support all major Open Graph types
+- Validate Twitter Card metadata
+- Check image dimensions and formats
+- Verify canonical URLs
+- Handle edge cases gracefully
+
+## File Organization
+```
+packages/seo-console/
+├── src/
+│   ├── components/          # React components
+│   ├── lib/                # Core utilities
+│   ├── hooks/              # Custom React hooks
+│   ├── types/              # TypeScript definitions
+│   ├── validation/         # SEO validation logic
+│   ├── database/           # Supabase operations
+│   └── plugins/            # Next.js plugins
+app/demo/                   # Demo application
+```
+
+## Error Handling
+- Use Result types for operations that can fail
+- Provide meaningful error messages
+- Log errors appropriately
+- Graceful degradation for validation failures
+
+## Testing Requirements
+- Unit tests for all validation logic
+- Integration tests for Supabase operations
+- E2E tests for critical workflows
+- Accessibility testing with axe-core
+
+## Performance
+- Lazy load admin UI components
+- Optimize image processing
+- Cache validation results
+- Monitor bundle size impact
+
+## Security
+- Sanitize all user inputs
+- Use parameterized queries
+- Validate file uploads properly
+- Implement proper CORS policies

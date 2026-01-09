@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #135bec;
+  --color-backgroundLight: #f6f6f8;
+  --color-backgroundDark: #101622;
+  --color-surfaceDark: #192233;
+  --color-borderDark: #324467;
+  --color-textSecondary: #92a4c9;
+  
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+}
+
+/* Custom scrollbar hiding */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Safe area support */
+.safe-area-inset-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}

@@ -1,0 +1,14 @@
+{
+  "cliVersion": "0.6.8",
+  "nodeVersion": "v22.21.0",
+  "platform": "win32",
+  "cwd": "D:\\SEO\\seo-console-package",
+  "command": "verify",
+  "argv": [
+    "verify"
+  ],
+  "resolvedPaths": {
+    "cwd": "D:\\SEO\\seo-console-package"
+  },
+  "errorMessage": "Verify failed: 1 check(s) failed or missing. Failed scripts: typecheck"
+}

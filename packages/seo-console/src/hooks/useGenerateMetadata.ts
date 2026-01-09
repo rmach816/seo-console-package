@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { getSEORecordByRoute } from "../lib/database/seo-records";
 import { detectStorageConfig, createStorageAdapter } from "../lib/storage/storage-factory";
 import type { SEORecord } from "../lib/validation/seo-schema";
 
@@ -43,24 +42,16 @@ export async function useGenerateMetadata(
     };
   }
 
-  // Try to use storage adapter first (for file storage support)
-  // Fall back to direct Supabase if storage adapter not available
+  // Use file storage adapter
   let record: SEORecord | null = null;
 
   try {
     const storageConfig = detectStorageConfig();
-    if (storageConfig.type === "file" || storageConfig.type === "memory") {
-      const storage = createStorageAdapter(storageConfig);
-      record = await storage.getRecordByRoute(routePath);
-    } else {
-      // Use existing Supabase function
-      const result = await getSEORecordByRoute(routePath);
-      record = result.success ? result.data || null : null;
-    }
+    const storage = createStorageAdapter(storageConfig);
+    record = await storage.getRecordByRoute(routePath);
   } catch (error) {
-    // Fallback to Supabase if storage adapter fails
-    const result = await getSEORecordByRoute(routePath);
-    record = result.success ? result.data || null : null;
+    // If storage fails, just return fallback metadata
+    console.warn("Failed to load SEO record from storage:", error);
   }
 
   if (!record) {

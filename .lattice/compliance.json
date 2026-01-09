@@ -1,0 +1,557 @@
+{
+  "runs": [
+    {
+      "timestamp": "2026-01-07T17:23:45.285Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "lint"
+      ],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-07T17:24:12.345Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "lint"
+      ],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-07T17:27:17.921Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "lint"
+      ],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-07T17:29:22.043Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "lint"
+      ],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-07T17:31:01.143Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "lint"
+      ],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-07T18:25:41.163Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "lint"
+      ],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-07T18:41:01.434Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-07T18:48:28.455Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-07T18:48:49.760Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-07T18:50:55.195Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-07T18:52:54.363Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-08T03:53:41.122Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "lint",
+        "typecheck",
+        "test"
+      ],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-08T03:54:53.099Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "lint",
+        "typecheck"
+      ],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-08T03:56:48.983Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-08T03:59:05.972Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "startup"
+    },
+    {
+      "timestamp": "2026-01-08T04:14:56.349Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build",
+        "e2e",
+        "security",
+        "audit"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "test",
+        "audit"
+      ],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T05:45:03.687Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "test",
+        "build"
+      ],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T06:08:07.551Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "test"
+      ],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T06:09:30.177Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "test"
+      ],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T06:10:18.353Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T06:23:30.972Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T06:24:22.205Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T06:34:41.250Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T06:35:50.479Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T14:14:50.005Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T14:27:59.743Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T14:29:21.326Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T14:30:23.280Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T14:35:25.393Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T14:40:23.488Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T14:42:07.051Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T14:50:18.661Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T14:54:36.113Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T14:55:47.460Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T14:58:42.939Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T15:05:57.667Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T15:07:20.284Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T15:27:20.729Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T15:51:21.184Z",
+      "passed": true,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "missingScripts": [],
+      "failedScripts": [],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T17:31:36.365Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck",
+        "test",
+        "build",
+        "e2e",
+        "security",
+        "audit"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "test",
+        "build",
+        "e2e",
+        "security",
+        "audit"
+      ],
+      "preset": "enterprise"
+    },
+    {
+      "timestamp": "2026-01-08T19:10:26.530Z",
+      "passed": false,
+      "checksRun": [
+        "lint",
+        "typecheck"
+      ],
+      "missingScripts": [],
+      "failedScripts": [
+        "typecheck"
+      ],
+      "preset": "startup"
+    }
+  ],
+  "stats": {
+    "totalRuns": 41,
+    "passed": 27,
+    "failed": 14,
+    "streak": 0,
+    "lastRun": "2026-01-08T19:10:26.530Z"
+  }
+}
