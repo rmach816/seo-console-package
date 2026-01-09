@@ -29,31 +29,37 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 
 The package will automatically detect and use Supabase if these are set.
 
-### Step 2: Create API Routes
+### Step 2: Create API Routes (REQUIRED - This is why you're getting 404 errors!)
 
-Create the following API route in your Next.js app:
+**⚠️ CRITICAL:** The package does NOT include API routes. You MUST create them in your Next.js app. The 404 error you're seeing means the API route doesn't exist yet.
 
-**`app/api/seo-records/route.ts`:**
+**Create `app/api/seo-records/route.ts`:**
 
 ```typescript
 import { NextRequest, NextResponse } from "next/server";
-import { 
-  getSEORecords, 
-  getSEORecordByRoute, 
-  createSEORecord, 
-  updateSEORecord, 
-  deleteSEORecord 
-} from "@seo-console/package/server";
+import { detectStorageConfig, createStorageAdapter } from "@seo-console/package";
+import { createSEORecordSchema } from "@seo-console/package/server";
 
 // GET - Fetch all SEO records
 export async function GET() {
   try {
-    const result = await getSEORecords();
-    if (!result.success) {
-      return NextResponse.json({ error: result.error?.message }, { status: 500 });
+    // Auto-detect storage type (file or Supabase)
+    const config = detectStorageConfig();
+    const storage = createStorageAdapter(config);
+    
+    // Check if storage is available
+    const isAvailable = await storage.isAvailable();
+    if (!isAvailable) {
+      return NextResponse.json(
+        { error: "Storage not available" },
+        { status: 500 }
+      );
     }
-    return NextResponse.json({ data: result.data || [] });
+    
+    const records = await storage.getRecords();
+    return NextResponse.json({ data: records || [] });
   } catch (error) {
+    console.error("Error fetching SEO records:", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Failed to fetch records" },
       { status: 500 }
@@ -65,48 +71,111 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const result = await createSEORecord(body);
-    if (!result.success) {
-      return NextResponse.json({ error: result.error?.message }, { status: 500 });
+    
+    // Validate the request body
+    const validated = createSEORecordSchema.parse(body);
+    
+    // Auto-detect storage type
+    const config = detectStorageConfig();
+    const storage = createStorageAdapter(config);
+    
+    const record = await storage.createRecord(validated);
+    return NextResponse.json({ data: record }, { status: 201 });
+  } catch (error) {
+    console.error("Error creating SEO record:", error);
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: 400 }
+      );
     }
-    return NextResponse.json({ data: result.data });
+    return NextResponse.json(
+      { error: "Invalid request" },
+      { status: 400 }
+    );
+  }
+}
+```
+
+**Create `app/api/seo-records/[id]/route.ts`:**
+
+```typescript
+import { NextRequest, NextResponse } from "next/server";
+import { detectStorageConfig, createStorageAdapter } from "@seo-console/package";
+import { updateSEORecordSchema } from "@seo-console/package/server";
+
+interface RouteParams {
+  params: Promise<{ id: string }>;
+}
+
+// GET - Get a single SEO record
+export async function GET(
+  request: NextRequest,
+  { params }: RouteParams
+) {
+  try {
+    const { id } = await params;
+    const config = detectStorageConfig();
+    const storage = createStorageAdapter(config);
+    
+    const record = await storage.getRecordById(id);
+    
+    if (!record) {
+      return NextResponse.json(
+        { error: "Record not found" },
+        { status: 404 }
+      );
+    }
+    
+    return NextResponse.json({ data: record });
   } catch (error) {
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to create record" },
+      { error: error instanceof Error ? error.message : "Failed to fetch record" },
       { status: 500 }
     );
   }
 }
 
-// PUT - Update an existing SEO record
-export async function PUT(request: NextRequest) {
+// PATCH - Update an SEO record
+export async function PATCH(
+  request: NextRequest,
+  { params }: RouteParams
+) {
   try {
+    const { id } = await params;
     const body = await request.json();
-    const result = await updateSEORecord(body);
-    if (!result.success) {
-      return NextResponse.json({ error: result.error?.message }, { status: 500 });
-    }
-    return NextResponse.json({ data: result.data });
+    
+    const validated = updateSEORecordSchema.parse({ ...body, id });
+    const config = detectStorageConfig();
+    const storage = createStorageAdapter(config);
+    
+    const record = await storage.updateRecord(validated);
+    return NextResponse.json({ data: record });
   } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to update record" },
-      { status: 500 }
+      { error: "Invalid request" },
+      { status: 400 }
     );
   }
 }
 
 // DELETE - Delete an SEO record
-export async function DELETE(request: NextRequest) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: RouteParams
+) {
   try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
-    if (!id) {
-      return NextResponse.json({ error: "ID is required" }, { status: 400 });
-    }
-    const result = await deleteSEORecord(id);
-    if (!result.success) {
-      return NextResponse.json({ error: result.error?.message }, { status: 500 });
-    }
+    const { id } = await params;
+    const config = detectStorageConfig();
+    const storage = createStorageAdapter(config);
+    
+    await storage.deleteRecord(id);
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json(
@@ -116,6 +185,10 @@ export async function DELETE(request: NextRequest) {
   }
 }
 ```
+
+> **Important:** These API routes use the storage adapter system, which automatically works with:
+> - **File storage** (default) - if no Supabase credentials are set
+> - **Supabase** - if `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are set
 
 ### Step 3: Add Admin Pages
 
