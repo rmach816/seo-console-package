@@ -8,14 +8,30 @@ A production-ready SEO validation and management system for Next.js applications
 npm install @seo-console/package
 ```
 
-**🎉 Automatic Setup:** After installation, the package automatically generates all necessary API routes and admin pages. No manual setup required!
+**🤖 For AI Coders (Cursor, GitHub Copilot, etc.):**
 
-If you need to run setup manually:
+After installing, **you MUST run the setup script** to generate all necessary files:
+
 ```bash
 npx @seo-console/package setup
-# or
-npm run setup --workspace=@seo-console/package
 ```
+
+This automatically creates:
+- ✅ All API routes (`/api/seo-records`, `/api/discover-routes`, `/api/import-from-site`, `/api/auto-setup`)
+- ✅ Admin page at `/admin/seo`
+- ✅ Everything needed for the package to work
+
+**The setup script will:**
+1. Create `app/api/seo-records/route.ts` and `app/api/seo-records/[id]/route.ts`
+2. Create `app/api/discover-routes/route.ts`
+3. Create `app/api/import-from-site/route.ts`
+4. Create `app/api/auto-setup/route.ts` (one-click import of all pages)
+5. Create `app/admin/seo/page.tsx` with auto-setup button
+
+**After running setup:**
+1. Add a link to `/admin/seo` in your admin navigation
+2. Visit `/admin/seo` and click "Auto-Setup" to import all existing pages and SEO
+3. Done! Everything works automatically.
 
 ## Setup Guide
 
@@ -31,9 +47,11 @@ SEO_CONSOLE_STORAGE_PATH=./data/seo-records.json
 
 That's it! No database setup needed.
 
-### Step 2: Create API Routes (REQUIRED - This is why you're getting 404 errors!)
+### Step 3: Create API Routes (AUTOMATIC if you ran setup script)
 
-**⚠️ CRITICAL:** The package does NOT include API routes. You MUST create them in your Next.js app. The 404 error you're seeing means the API route doesn't exist yet.
+**⚠️ If you ran `npx @seo-console/package setup`, skip this step!** The setup script already created these files.
+
+**If you didn't run setup, you MUST create these manually:**
 
 **Create `app/api/seo-records/route.ts`:**
 
@@ -280,7 +298,7 @@ export default function EditorPage() {
 
 > **Note:** For complete implementation examples, see the demo app in the repository. The package provides the data layer and utilities; you'll need to build the UI components or copy from the demo.
 
-### Step 4: Add SEO Metadata to Your Pages
+### Step 5: Add SEO Metadata to Your Pages
 
 Use the `useGenerateMetadata` hook to automatically generate metadata from your SEO records:
 
