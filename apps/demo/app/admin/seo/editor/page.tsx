@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { 
   ChevronDown, 
@@ -32,7 +32,7 @@ const colors = {
   yellow: "#eab308",
 };
 
-export default function EditorPage() {
+function EditorPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -898,5 +898,13 @@ export default function EditorPage() {
         </div>
       </nav>
     </div>
+  );
+}
+
+export default function EditorPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: 32, textAlign: "center", color: "#92a4c9" }}>Loading...</div>}>
+      <EditorPageContent />
+    </Suspense>
   );
 }

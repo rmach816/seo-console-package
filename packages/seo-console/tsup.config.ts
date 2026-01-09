@@ -15,6 +15,15 @@ export default defineConfig({
   external: [
     "react",
     "react-dom",
-    "next"
+    "next",
+    "fs",
+    "fs/promises",
+    "path",
+    "node:fs",
+    "node:fs/promises",
+    "node:path",
+    "node:stream",
+    "node:events",
+    "glob"
   ],
 });

@@ -22,8 +22,12 @@ export async function POST(request: Request) {
           continue;
         }
 
-        const recordData = metadataToSEORecord(metadata, route);
-        const result = await createSEORecord(recordData);
+        const recordData = metadataToSEORecord(metadata, route, "demo-user");
+        if (!recordData.userId || !recordData.routePath) {
+          results.push({ route, success: false, error: "Invalid record data" });
+          continue;
+        }
+        const result = await createSEORecord(recordData as { userId: string; routePath: string; [key: string]: unknown });
 
         if (result.success) {
           results.push({ route, success: true });

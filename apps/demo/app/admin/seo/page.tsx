@@ -209,8 +209,8 @@ export default function SEOAdminPage() {
         // Refresh records
         setTimeout(() => window.location.reload(), 1000);
       }
-    } catch (error) {
-      console.error("Error creating route:", error);
+    } catch (err) {
+      console.error("Error creating route:", err);
       error("Failed to create route. Please try again.");
     }
   };
@@ -722,7 +722,9 @@ export default function SEOAdminPage() {
               <div style={{ padding: 32, textAlign: "center", color: colors.textSecondary }}>No routes match your search.</div>
             ) : (
               <div>
-                {paginatedRecords.map((record, idx) => {
+                {paginatedRecords
+                  .filter((record): record is SEORecord & { id: string } => !!record.id)
+                  .map((record, idx) => {
                   const isLast = idx === filteredRecords.length - 1;
                   const statusColor = record.validationStatus === "valid" ? colors.green : record.validationStatus === "invalid" ? colors.red : colors.yellow;
                   const statusText = record.validationStatus === "valid" ? "Valid" : record.validationStatus === "invalid" ? "Error" : "Warning";
@@ -1051,7 +1053,9 @@ export default function SEOAdminPage() {
                 Select a route to preview its OG image:
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 300, overflowY: "auto" }}>
-                {displayRecords.map((record) => (
+                {displayRecords
+                  .filter((record): record is SEORecord & { id: string } => !!record.id)
+                  .map((record) => (
                   <button
                     key={record.id}
                     onClick={() => {

@@ -28,14 +28,25 @@ export type Result<T> =
 export * from "./hooks";
 
 // Export sitemap and robots generators (server-side)
-export { generateSitemapXML, generateSitemapFromRecords, seoRecordsToSitemapEntries } from "./lib/sitemap-generator";
-export { generateRobotsTxt, updateRobotsTxtWithSitemap } from "./lib/robots-generator";
+export { generateSitemapXML, generateSitemapFromRecords, seoRecordsToSitemapEntries, validateSitemapEntry } from "./lib/sitemap-generator";
+export type { SitemapEntry, SitemapOptions } from "./lib/sitemap-generator";
+export { generateRobotsTxt, updateRobotsTxtWithSitemap, extractSitemapFromRobotsTxt } from "./lib/robots-generator";
+export type { RobotsTxtOptions } from "./lib/robots-generator";
 
 // Export metadata extractor (server-side)
-export { extractMetadataFromURL, crawlSiteForSEO, metadataToSEORecord } from "./lib/metadata-extractor";
+export { extractMetadataFromURL, crawlSiteForSEO, metadataToSEORecord, extractMetadataFromHTML } from "./lib/metadata-extractor";
+export type { ExtractedMetadata } from "./lib/metadata-extractor";
 
 // Export route discovery (server-side)
-export { discoverNextJSRoutes } from "./lib/route-discovery";
+export { discoverNextJSRoutes, generateExamplePaths } from "./lib/route-discovery";
+export type { DiscoveredRoute } from "./lib/route-discovery";
 
 // Export crawlability validator (server-side)
 export { validateCrawlability, validateRobotsTxt, validatePublicAccess } from "./lib/validation/crawlability-validator";
+
+// Export storage adapters (server-side - FileStorage uses fs)
+export { createStorageAdapter } from "./lib/storage/storage-factory";
+export { FileStorage } from "./lib/storage/file-storage";
+
+// Export database functions (server-side - Supabase)
+export { getSEORecords, getSEORecordById, getSEORecordByRoute, createSEORecord, updateSEORecord, deleteSEORecord } from "./lib/database/seo-records";

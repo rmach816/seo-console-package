@@ -17,20 +17,23 @@ export type { ImageValidationResult } from "./lib/validation/image-validator";
 // Export validation schemas (client-safe - Zod schemas)
 export { createSEORecordSchema, updateSEORecordSchema } from "./lib/validation/seo-schema";
 
-// Export utilities (client-safe)
-export { discoverNextJSRoutes, generateExamplePaths } from "./lib/route-discovery";
-export type { DiscoveredRoute } from "./lib/route-discovery";
-export { extractMetadataFromHTML, extractMetadataFromURL, crawlSiteForSEO, metadataToSEORecord } from "./lib/metadata-extractor";
+// Export utilities (client-safe - pure functions only)
+export { extractMetadataFromHTML, metadataToSEORecord } from "./lib/metadata-extractor";
 export type { ExtractedMetadata } from "./lib/metadata-extractor";
 export { generateSitemapXML, generateSitemapFromRecords, seoRecordsToSitemapEntries, validateSitemapEntry } from "./lib/sitemap-generator";
 export type { SitemapEntry, SitemapOptions } from "./lib/sitemap-generator";
 export { generateRobotsTxt, updateRobotsTxtWithSitemap, extractSitemapFromRobotsTxt } from "./lib/robots-generator";
 export type { RobotsTxtOptions } from "./lib/robots-generator";
 
-// Export storage adapters (client-safe interfaces)
+// Export storage adapters (client-safe interfaces only)
 export type { StorageAdapter, StorageType, StorageConfig } from "./lib/storage/storage-adapter";
-export { createStorageAdapter, detectStorageConfig } from "./lib/storage/storage-factory";
-export { FileStorage } from "./lib/storage/file-storage";
+export { detectStorageConfig } from "./lib/storage/storage-factory";
+
+// NOTE: Server-only utilities are exported from @seo-console/package/server:
+// - discoverNextJSRoutes, generateExamplePaths (uses glob, fs)
+// - extractMetadataFromURL, crawlSiteForSEO (requires Node.js fetch)
+// - FileStorage (uses fs)
+// - createStorageAdapter (may return FileStorage)
 
 // NOTE: Server-side functions (validateOGImage, validateHTML, validateURL, database functions, hooks)
 // are exported from @seo-console/package/server to prevent client bundle issues

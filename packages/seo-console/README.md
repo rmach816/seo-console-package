@@ -305,13 +305,115 @@ Add a link to the SEO admin section in your main admin navigation:
 </nav>
 ```
 
+### Step 5: Discover and Import Existing Pages (Optional but Recommended)
+
+**⚠️ IMPORTANT:** The package doesn't automatically detect your existing pages or SEO settings. You need to discover and import them.
+
+**Create `app/api/discover-routes/route.ts` to find all your pages:**
+
+```typescript
+import { NextResponse } from "next/server";
+import { discoverNextJSRoutes } from "@seo-console/package/server";
+
+export async function POST() {
+  try {
+    const appDir = process.env.NEXT_PUBLIC_APP_DIR || "app";
+    const routes = await discoverNextJSRoutes(appDir);
+    return NextResponse.json({ routes });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Failed to discover routes" },
+      { status: 500 }
+    );
+  }
+}
+```
+
+**Create `app/api/import-from-site/route.ts` to import existing SEO metadata:**
+
+```typescript
+import { NextRequest, NextResponse } from "next/server";
+import { detectStorageConfig, createStorageAdapter } from "@seo-console/package";
+import { extractMetadataFromURL, metadataToSEORecord } from "@seo-console/package/server";
+
+export async function POST(request: NextRequest) {
+  try {
+    const { baseUrl, routes } = await request.json();
+
+    if (!baseUrl) {
+      return NextResponse.json({ error: "Base URL is required" }, { status: 400 });
+    }
+
+    const routesToImport = Array.isArray(routes) && routes.length > 0 ? routes : ["/"];
+    const results: Array<{ route: string; success: boolean; error?: string }> = [];
+    
+    const config = detectStorageConfig();
+    const storage = createStorageAdapter(config);
+
+    for (const route of routesToImport) {
+      try {
+        const url = new URL(route, baseUrl).toString();
+        const metadata = await extractMetadataFromURL(url);
+
+        if (Object.keys(metadata).length === 0) {
+          results.push({ route, success: false, error: "No metadata found" });
+          continue;
+        }
+
+        const recordData = metadataToSEORecord(metadata, route, "file-user");
+        await storage.createRecord(recordData as { userId: string; routePath: string; [key: string]: unknown });
+        results.push({ route, success: true });
+
+        // Rate limiting - wait 200ms between requests
+        await new Promise((resolve) => setTimeout(resolve, 200));
+      } catch (err) {
+        results.push({
+          route,
+          success: false,
+          error: err instanceof Error ? err.message : "Unknown error",
+        });
+      }
+    }
+
+    return NextResponse.json({ results });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Failed to import from site" },
+      { status: 500 }
+    );
+  }
+}
+```
+
+**How to use these routes:**
+
+1. **Discover routes:** Call `POST /api/discover-routes` to get a list of all your pages
+2. **Import SEO:** Call `POST /api/import-from-site` with your site's base URL and the routes you want to import
+
+Example:
+```typescript
+// In your admin UI or a script
+const discoverResponse = await fetch("/api/discover-routes", { method: "POST" });
+const { routes } = await discoverResponse.json();
+
+const importResponse = await fetch("/api/import-from-site", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    baseUrl: "https://yoursite.com",
+    routes: routes.map((r: any) => r.routePath)
+  })
+});
+```
+
 ## Quick Start Summary
 
 1. **Install:** `npm install @seo-console/package`
 2. **Create API route:** `app/api/seo-records/route.ts` (see Step 2)
 3. **Create admin pages:** `app/admin/seo/` directory with pages (see Step 3)
 4. **Add to navigation:** Link to `/admin/seo` in your admin menu
-5. **Use in pages:** Add `generateMetadata` to your pages (see Step 4)
+5. **Discover & import pages:** Create `app/api/discover-routes/route.ts` and `app/api/import-from-site/route.ts` (see Step 5)
+6. **Use in pages:** Add `generateMetadata` to your pages (see Step 4)
 
 That's it! The SEO admin interface will be accessible at `/admin/seo` as a new tab in your admin area.
 
