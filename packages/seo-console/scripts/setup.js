@@ -16,7 +16,7 @@ const ADMIN_DIR = "app/admin/seo";
 
 const API_ROUTES = {
   "seo-records/route.ts": `import { NextRequest, NextResponse } from "next/server";
-import { detectStorageConfig, createStorageAdapter } from "@seo-console/package";
+import { detectStorageConfig, createStorageAdapter } from "@seo-console/package/server";
 import { createSEORecordSchema } from "@seo-console/package/server";
 
 export async function GET() {
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
 `,
 
   "seo-records/[id]/route.ts": `import { NextRequest, NextResponse } from "next/server";
-import { detectStorageConfig, createStorageAdapter } from "@seo-console/package";
+import { detectStorageConfig, createStorageAdapter } from "@seo-console/package/server";
 import { updateSEORecordSchema } from "@seo-console/package/server";
 
 interface RouteParams {
@@ -134,7 +134,7 @@ export async function POST() {
 `,
 
   "import-from-site/route.ts": `import { NextRequest, NextResponse } from "next/server";
-import { detectStorageConfig, createStorageAdapter } from "@seo-console/package";
+import { detectStorageConfig, createStorageAdapter } from "@seo-console/package/server";
 import { extractMetadataFromURL, metadataToSEORecord } from "@seo-console/package/server";
 
 export async function POST(request: NextRequest) {
@@ -180,7 +180,7 @@ export async function POST(request: NextRequest) {
 `,
 
   "auto-setup/route.ts": `import { NextRequest, NextResponse } from "next/server";
-import { detectStorageConfig, createStorageAdapter } from "@seo-console/package";
+import { detectStorageConfig, createStorageAdapter } from "@seo-console/package/server";
 import { discoverNextJSRoutes, extractMetadataFromURL, metadataToSEORecord } from "@seo-console/package/server";
 
 export async function POST(request: NextRequest) {

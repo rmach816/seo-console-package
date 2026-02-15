@@ -68,8 +68,8 @@ export const seoMetadataSchema = z.object({
 
 // Full SEO record schema (for database operations)
 export const seoRecordSchema = seoMetadataSchema.extend({
-  id: z.string().uuid().optional(),
-  userId: z.string().uuid(),
+  id: z.string().optional(),
+  userId: z.string(),
   routePath: z
     .string()
     .min(1, "Route path is required")
@@ -89,6 +89,9 @@ export const createSEORecordSchema = seoRecordSchema.omit({
   validationErrors: true,
   createdAt: true,
   updatedAt: true,
+}).extend({
+  // File storage mode does not require user IDs; DB mode will derive userId server-side.
+  userId: z.string().optional(),
 });
 
 // Schema for updating an SEO record

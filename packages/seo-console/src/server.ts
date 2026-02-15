@@ -45,7 +45,7 @@ export type { DiscoveredRoute } from "./lib/route-discovery";
 export { validateCrawlability, validateRobotsTxt, validatePublicAccess } from "./lib/validation/crawlability-validator";
 
 // Export storage adapters (server-side - FileStorage uses fs)
-export { createStorageAdapter } from "./lib/storage/storage-factory";
+export { createStorageAdapter, detectStorageConfig } from "./lib/storage/storage-factory";
 export { FileStorage } from "./lib/storage/file-storage";
 
 // Export database functions (server-side - Supabase)

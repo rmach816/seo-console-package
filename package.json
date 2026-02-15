@@ -12,7 +12,7 @@
     "build:package": "npm run build --workspace=packages/seo-console",
     "start": "npm run start --workspace=apps/demo",
     "lint": "eslint \"**/*.{ts,tsx}\" --fix",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "npm run typecheck --workspace=packages/seo-console && npm run typecheck --workspace=apps/demo",
     "test": "node scripts/test.js",
     "verify": "npx latticeai verify",
     "format": "prettier --write .",

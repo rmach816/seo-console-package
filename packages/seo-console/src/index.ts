@@ -27,13 +27,13 @@ export type { RobotsTxtOptions } from "./lib/robots-generator";
 
 // Export storage adapters (client-safe interfaces only)
 export type { StorageAdapter, StorageType, StorageConfig } from "./lib/storage/storage-adapter";
-export { detectStorageConfig } from "./lib/storage/storage-factory";
 
 // NOTE: Server-only utilities are exported from @seo-console/package/server:
 // - discoverNextJSRoutes, generateExamplePaths (uses glob, fs)
 // - extractMetadataFromURL, crawlSiteForSEO (requires Node.js fetch)
 // - FileStorage (uses fs)
 // - createStorageAdapter (may return FileStorage)
+// - detectStorageConfig (reads process.env)
 
 // NOTE: Server-side functions (validateOGImage, validateHTML, validateURL, database functions, hooks)
 // are exported from @seo-console/package/server to prevent client bundle issues

@@ -36,8 +36,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
-    "setup": "node scripts/setup.js",
-    "postinstall": "node scripts/setup.js"
+    "setup": "node scripts/setup.js"
   },
   "bin": {
     "seo-console-setup": "./scripts/setup.js"

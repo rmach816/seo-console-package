@@ -12,5 +12,5 @@ const child = spawn("npx", ["vitest", "run"], {
 
 child.on("exit", (code) => {
   // Always exit successfully, even if no tests are found
-  process.exit(0);
+  process.exit(code ?? 1);
 });

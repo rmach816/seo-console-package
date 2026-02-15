@@ -59,7 +59,7 @@ function transformRowToSEORecord(row: SEORecordRow): SEORecord {
 
 // Transform SEORecord to database insert format
 function transformToInsert(
-  record: CreateSEORecord
+  record: CreateSEORecord & { userId: string }
 ): Omit<SEORecordInsert, "id" | "created_at" | "updated_at"> {
   return {
     user_id: record.userId,
